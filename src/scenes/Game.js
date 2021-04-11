@@ -1,7 +1,9 @@
 import Phaser from "phaser"
 class Game extends Phaser.Scene
-
+	
  {
+	 rightPoints = 0;
+		leftPoints = 0;
     preload(){
 		
 		this.load.image('background', "assets/airhockey-mod.png");
@@ -17,12 +19,16 @@ class Game extends Phaser.Scene
 		
     }
     create(){
-		this.leftScore = this.add.text(50, 0, 'Score: ', {
+		this.rightPoints = 0;
+		this.leftPoints = 0;
+		this.physics.world.setBoundsCollision(true, true, true, true);
+		this.physics.world.setFPS(45);
+		this.leftScore = this.add.text(50, 0, `Blue Score: ${this.leftPoints}`, {
 			fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
 		});
 		this.leftScore.depth = 3;
 
-		this.rightScore = this.add.text(863, 0, 'Score: ', {
+		this.rightScore = this.add.text(830, 0, `Red Score: ${this.rightPoints}`, {
 			fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
 		});
 		this.rightScore.depth = 3;
@@ -56,12 +62,12 @@ class Game extends Phaser.Scene
 
 
 
-			this.rightGoal = this.add.rectangle(960, 260, 55,110, 0x000000,1);
+			this.rightGoal = this.add.rectangle(970, 260, 55,110, 0x000000,1);
 			this.physics.add.existing(this.rightGoal)
 			this.physics.add.collider(this.rightGoal)
 			this.rightGoal.body.setImmovable(true);
 
-			this.leftGoal = this.add.rectangle(0, 260, 55, 110, 0x000000, 1);
+			this.leftGoal = this.add.rectangle(-7, 260, 55, 110, 0x000000, 1);
 			this.physics.add.existing(this.leftGoal);
 			this.physics.add.collider(this.leftGoal);
 			this.leftGoal.body.setImmovable(true);
@@ -70,24 +76,30 @@ class Game extends Phaser.Scene
 
 
 
+			this.ballbounce = 1;
 			this.ball =  this.physics.add.sprite(480, 260, 'puck');
 			// console.log(this.physics.add.sprite);
 			// this.test = ball
 
-			this.ball.setCircle(20.5,2);
+			this.ball.setCircle(25.5,2);
 			
 
-			this.ball.setCollideWorldBounds(true);
+			// this.ball.setCollideWorldBounds(true);
 			
 
-			this.ball.setBounce(.8);
+			this.ball.setBounce(this.ballbounce);
 			
-			this.ball.setVelocity(0,500);
-			// this.ball.body.useDamping=true
-			// this.ball.setDrag(0.90)
+			this.ball.setVelocity(-0,500);
+			this.ball.body.useDamping=true
+			this.ball.setDrag(0.85)
 			
 			
+			// this.ball.body.collideWorldBounds = true
+			// this.ball.body.onWorldBounds=true
+
 			
+
+			this.ball.setMaxVelocity(500)
 			this.physics.add.collider(this.ball);
 			
 			// const ball = this.add.circle(400, 250, 0xffffff);
@@ -99,7 +111,7 @@ class Game extends Phaser.Scene
 			// );
 				
 			this.paddleLeft = this.physics.add.sprite(60, 260, "blue");
-			// this.paddleLeft.setCircle(35,5,5)
+			this.paddleLeft.setCircle(35,5,5)
 			// this.physics.add.existing(this.paddleLeft.body)
 			this.physics.add.existing(this.paddleLeft);
 			this.paddleLeft.body.setCollideWorldBounds(true, 1, 1);
@@ -113,7 +125,7 @@ class Game extends Phaser.Scene
 			// ai paddle
 
 			this.paddleRight = this.physics.add.sprite(900, 260, "red");
-			// this.paddleRight.setCircle(35,5,5)
+			this.paddleRight.setCircle(35,5,5)
 			// console.log(this.paddleRight.body)
 			this.paddleRight.body.setCollideWorldBounds(true,1,1)
 			this.paddleRight.body.setImmovable(true)
@@ -133,24 +145,96 @@ class Game extends Phaser.Scene
 			// this.cursors = this.input.keyboard.createCursorKeys();
 		}
     update(){
+		
+
 	
-		// this.test.setVelocity(100)
+		
+		
+		
 		const lbody = this.paddleLeft.body
 		const rbody = this.paddleRight.body
-		if (
-			this.physics.collide(this.paddleLeft, this.ball) ||
-			this.physics.collide(this.paddleRight, this.ball) ||
-			this.physics.collide(this.ball, this.paddleRight) ||
-			this.physics.collide(this.ball, this.paddleLeft)
-		) {
-			console.log('hit');
-			this.ball.setVelocity(350,350);
+		
+		if (this.ball.body.checkWorldBounds()) {
+			this.ball.setBounce(this.ballbounce - 0.1);
+			console.log("wall hit")
+			console.log(this.ball.body);
+
 		}
+
+
+
+		if (this.physics.collide(this.paddleLeft, this.ball)) {
+			console.log('hit');
+			
+			this.ball.setBounce(this.ballbounce + 0.5)
+			
+			
+			this.ball.setVelocity(500);
+			
+		}
+		 if(this.physics.collide(this.paddleRight, this.ball)){
+			 this.ball.setBounce(this.ballbounce + 0.5);
+
+				this.ball.setVelocity(-500);
+		 }
 		if(this.physics.collide(this.ball,this.leftGoal)){
 			console.log("Right scored a point")
+			this.rightPoints += 1;
+			this.rightScore.setText("Red Score: " + this.rightPoints)
+			this.ball.setPosition(475,265)
+			this.ball.setVelocity(0);
+			this.paddleLeft.setPosition(60, 260);
+			this.paddleRight.setPosition(900, 260);
+			if (this.rightPoints == 1) {
+				console.log('Red Wins!');
+				this.win = this.add.text(450, 500, `RED WINS!!!!!`, {
+					fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+				});
+				this.win.depth = 3;
+
+				this.gameRestart = this.add.text(400, 200, 'Restart game?', {
+					color: "black",
+					backgroundColor: "white"
+				});
+				this.gameRestart.setInteractive()
+				this.gameRestart.on('pointerdown', (pointer) => {
+					console.log('clicked');
+					this.registry.destroy(); // destroy registry
+					this.events.off(); // disable all active events
+					this.scene.restart(); // restart current scene
+				});
+
+			}
 			
 		}else if(this.physics.collide(this.ball,this.rightGoal)){
 			console.log("Left scored a point")
+			this.leftPoints += 1;
+			
+			this.leftScore.setText("Blue Score: " + this.leftPoints);
+			this.ball.setPosition(475, 265);
+			this.ball.setVelocity(0)
+			this.paddleLeft.setPosition(60, 260);
+			this.paddleRight.setPosition(900, 260);
+			if (this.leftPoints == 1) {
+				console.log('Blue Wins!');
+				this.win = this.add.text(450, 500, `BlUE WINS!!!!`, {
+				fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+			});
+			
+			this.win.depth = 3;
+			this.gameRestart = this.add.text(400, 200, 'Click to Restart Game', {
+				color: 'black',
+				backgroundColor: 'white',
+			});
+			this.gameRestart.setInteractive();
+			this.gameRestart.on('pointerdown', (pointer) => {
+				console.log('clicked');
+				this.registry.destroy(); // destroy registry
+				this.events.off(); // disable all active events
+				this.scene.restart(); // restart current scene
+			});
+			}
+			
 			
 		}
         if (this.keyA.isDown) {

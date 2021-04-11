@@ -10,8 +10,10 @@ const config = {
         default: 'arcade',
         arcade: {
             gravity: {y: 0},
+            fps: 120,
             debug: true
         }
+
     }
 }
 const game = new Phaser.Game(config)
