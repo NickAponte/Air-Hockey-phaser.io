@@ -4,9 +4,9 @@ play it here! ====> https://pacific-tundra-46208.herokuapp.com/
 hover over the help in-game for the controls!
 
 Alternatively, fork and clone this repo.
-In your terminal, run - npm i - to grab the depencencies, 
-then use the included start script to run the game locally on port 1234, 
-or, in your terminal again, run node server.js, which will open the game on port 8000 
+-In your terminal, run - npm i - to grab the depencencies, 
+-then use the included start script to run the game locally on port 1234, 
+-or, in your terminal again, run node server.js, which will open the game on port 8000 
 
 After picking one of these options, go to your browser and in the address bar type
 localhost:1234
