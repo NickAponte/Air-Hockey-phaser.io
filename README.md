@@ -29,10 +29,10 @@ make the game look/sound good
 
 
 ## Stretch goals
-allow players to view a list of past matches in-game
-allow players to create a signin to view their own matches.
-allow players to name their "colors" 
-allow players to save their matches (ie Bob vs Nick, winner Bob! score: 5 to 1 ) to a database
+Allow players to view a list of past matches in-game
+Allow players to create a signin to view their own matches.
+Allow players to name their "colors" 
+Allow players to save their matches (ie Bob vs Nick, winner Bob! score: 5 to 1 ) to a database
 make a singleplayer mode with a simple AI enemy
 make the game mobile friendly
 make the game touch friendly when using mobile screens
