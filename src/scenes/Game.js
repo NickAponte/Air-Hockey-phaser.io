@@ -159,8 +159,7 @@ class Game extends Phaser.Scene
 		
 		if (this.ball.body.checkWorldBounds()) {
 			this.ball.setBounce(this.ballbounce - 0.1);
-			console.log("wall hit")
-			console.log(this.ball.body);
+			
 			this.wall.play()
 
 		}
@@ -168,7 +167,6 @@ class Game extends Phaser.Scene
 
 
 		if (this.physics.collide(this.paddleLeft, this.ball)) {
-			console.log('hit left');
 			this.puckhit.play()
 			this.ball.setBounce(this.ballbounce + 0.5)
 			
@@ -178,14 +176,12 @@ class Game extends Phaser.Scene
 		}
 		 if(this.physics.collide(this.paddleRight, this.ball)){
 			this.puckhit.play();
-			 console.log("hit right")
 			 this.ball.setBounce(this.ballbounce + 0.5);
 
 				this.ball.setVelocity(-500);
 		 }
 		if(this.physics.collide(this.ball,this.leftGoal)){
 			this.goal.play()
-			console.log("Right scored a point")
 			this.rightPoints += 1;
 			this.rightScore.setText("Red Score: " + this.rightPoints)
 			this.ball.setPosition(475,265)
@@ -194,7 +190,7 @@ class Game extends Phaser.Scene
 			this.paddleRight.setPosition(900, 260);
 			if (this.rightPoints == 5) {
 				this.cheer.play()
-				console.log('Red Wins!');
+				
 				this.win = this.add.text(450, 500, `RED WINS!!!!!`, {
 					fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
 				});
@@ -206,13 +202,13 @@ class Game extends Phaser.Scene
 				});
 				this.gameRestart.setInteractive()
 				this.gameRestart.on('pointerdown', (pointer) => {
-					console.log('clicked');
+					
 					this.cheer.stop()
 					this.registry.destroy(); // destroy registry
 					this.events.off(); // disable all active events
 					this.music.stop();
 					this.scene.restart(); // restart current scene
-					console.log('Game ending');
+					
 					
 				});
 
@@ -220,7 +216,7 @@ class Game extends Phaser.Scene
 			
 		}else if(this.physics.collide(this.ball,this.rightGoal)){
 			this.goal.play();
-			console.log("Left scored a point")
+		
 			this.leftPoints += 1;
 			
 			this.leftScore.setText("Blue Score: " + this.leftPoints);
@@ -230,7 +226,7 @@ class Game extends Phaser.Scene
 			this.paddleRight.setPosition(900, 260);
 			if (this.leftPoints == 5) {
 				this.cheer.play();
-				console.log('Blue Wins!');
+				
 				this.win = this.add.text(450, 500, `BlUE WINS!!!!`, {
 				fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
 			});
@@ -242,13 +238,13 @@ class Game extends Phaser.Scene
 			});
 			this.gameRestart.setInteractive();
 			this.gameRestart.on('pointerdown', (pointer) => {
-				console.log('clicked');
+				
 				this.cheer.stop()
 				this.music.stop();
 				this.registry.destroy(); // destroy registry
 				this.events.off(); // disable all active events
 				this.scene.restart(); // restart current scene
-				console.log("Game ending")
+				
 			});
 			}
 			
