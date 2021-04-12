@@ -18,8 +18,13 @@
   },
   "homepage": "https://github.com/NickAponte/Phasergame#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "parcel-bundler": "^1.12.5",
     "phaser": "^3.54.0",
     "phaser3-rex-plugins": "^1.1.44"
+  },
+  "devDependencies": {
+    "webpack": "^5.31.2",
+    "webpack-cli": "^4.6.0"
   }
 }

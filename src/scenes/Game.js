@@ -16,7 +16,7 @@ class Game extends Phaser.Scene
 		this.load.audio("puckhit", ["assets/puckhit.mp3"])
 		this.load.audio("goal", ["assets/goal.mp3"])
 		this.load.audio("gamemusic", ["assets/music.mp3"])
-		this.load.audio("win", ["assets/win.mp3"])
+		this.load.audio("cheer", ["assets/win.mp3"])
 		this.title = this.add.text(430, 0, 'AIR HOCKEY', {
 			fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
 		});
@@ -81,12 +81,10 @@ class Game extends Phaser.Scene
 
 			this.ballbounce = 1;
 			this.ball = this.physics.add.sprite(480, 260, 'puck');
-			// console.log(this.physics.add.sprite);
-			// this.test = ball
-
+		
 			this.ball.setCircle(20.5, 2);
 
-			// this.ball.setCollideWorldBounds(true);
+			
 
 			this.ball.setBounce(this.ballbounce);
 
@@ -94,41 +92,30 @@ class Game extends Phaser.Scene
 			this.ball.body.useDamping = true;
 			this.ball.setDrag(0.85);
 
-			// this.ball.body.collideWorldBounds = true
-			// this.ball.body.onWorldBounds=true
+			
 
 			this.ball.setMaxVelocity(500);
 			this.physics.add.collider(this.ball);
 
-			// const ball = this.add.circle(400, 250, 0xffffff);
+			
 			this.physics.add.existing(this.ball);
-			// ball.body.setBounce(0,1);
-			// ball.body.setCollideWorldBounds(true, 1, 1);
-			// ball.body.setVelocity(
-			// 	Phaser.Math.Between(-200, 200)
-			// );
+			
 
 			this.paddleLeft = this.physics.add.sprite(60, 260, 'blue');
 			this.paddleLeft.setCircle(35, 5, 5);
-			// this.physics.add.existing(this.paddleLeft.body)
+		
 			this.physics.add.existing(this.paddleLeft);
 			this.paddleLeft.body.setCollideWorldBounds(true, 1, 1);
 			this.paddleLeft.body.setImmovable(true);
 
-			// console.log(this.paddleLeft.setCollideWorldBounds(true))500
-			// const body = paddleLeft.body
-			// body.setMass(5000)
-			// body.setBounce(1,1)
-
-			// ai paddle
 
 			this.paddleRight = this.physics.add.sprite(900, 260, 'red');
 			this.paddleRight.setCircle(35, 5, 5);
-			// console.log(this.paddleRight.body)
+			
 			this.paddleRight.body.setCollideWorldBounds(true, 1, 1);
 			this.paddleRight.body.setImmovable(true);
 
-			// this.paddleRight.body.setCollideWorldBounds(true,1,1)
+			
 
 			this.physics.add.collider(this.paddleRight, this.ball);
 
@@ -137,14 +124,11 @@ class Game extends Phaser.Scene
 			this.physics.add.collider(this.ball, this.paddleLeft);
 			this.physics.add.collider(this.ball, this.paddleRight);
 
-			// this.physics.add.collider(this.ball,this.leftGoal)
-			// this.physics.add.collider(this.ball, this.RightGoal);
-
-			// this.cursors = this.input.keyboard.createCursorKeys();
+		
 			this.puckhit = this.sound.add('puckhit', { loop: false });
 			this.goal = this.sound.add('goal', { loop: false });
 			this.wall = this.sound.add('wall', { loop: false });
-			this.win = this.sound.add("win" , {loop: true})
+			this.cheer = this.sound.add("cheer" , {loop: true})
 			this.music = this.sound.add('gamemusic', { loop: true });
 			this.music.play();
 			this.help = this.add.sprite(480, 200, 'help');
@@ -209,7 +193,7 @@ class Game extends Phaser.Scene
 			this.paddleLeft.setPosition(60, 260);
 			this.paddleRight.setPosition(900, 260);
 			if (this.rightPoints == 5) {
-				this.win.play()
+				this.cheer.play()
 				console.log('Red Wins!');
 				this.win = this.add.text(450, 500, `RED WINS!!!!!`, {
 					fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
@@ -223,10 +207,13 @@ class Game extends Phaser.Scene
 				this.gameRestart.setInteractive()
 				this.gameRestart.on('pointerdown', (pointer) => {
 					console.log('clicked');
+					this.cheer.stop()
 					this.registry.destroy(); // destroy registry
 					this.events.off(); // disable all active events
 					this.music.stop();
 					this.scene.restart(); // restart current scene
+					console.log('Game ending');
+					
 				});
 
 			}
@@ -242,7 +229,7 @@ class Game extends Phaser.Scene
 			this.paddleLeft.setPosition(60, 260);
 			this.paddleRight.setPosition(900, 260);
 			if (this.leftPoints == 5) {
-				this.win.play();
+				this.cheer.play();
 				console.log('Blue Wins!');
 				this.win = this.add.text(450, 500, `BlUE WINS!!!!`, {
 				fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
@@ -256,36 +243,37 @@ class Game extends Phaser.Scene
 			this.gameRestart.setInteractive();
 			this.gameRestart.on('pointerdown', (pointer) => {
 				console.log('clicked');
-				this.registry.destroy(); // destroy registry
+				this.cheer.stop()
 				this.music.stop();
+				this.registry.destroy(); // destroy registry
 				this.events.off(); // disable all active events
 				this.scene.restart(); // restart current scene
+				console.log("Game ending")
 			});
 			}
 			
 			
 		}
         if (this.keyA.isDown) {
-					// console.log('A key pressed');
-					// console.log('D key pressed');
+					
 					this.paddleLeft.x -= 5;
 					lbody.updateFromGameObject();
 					
 				} else if (this.keyS.isDown) {
-					// console.log('S key pwressed');
+					
 					this.paddleLeft.y += 5;
 					lbody.updateFromGameObject();
 				} else if (this.keyD.isDown) {
-					// console.log('D key pressed');
+					
 					this.paddleLeft.x += 5;
 					lbody.updateFromGameObject();
 				} else if (this.keyW.isDown) {
-					// console.log('W key pressed');
+					
 					this.paddleLeft.y -= 5;
 					lbody.updateFromGameObject();
 				}
         if (this.keyUp.isDown){
-            // console.log("up button")
+          
             this.paddleRight.y -= 5
             rbody.updateFromGameObject()
         }
