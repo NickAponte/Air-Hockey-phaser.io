@@ -1,6 +1,21 @@
 # Air-Hockey-phaser.io-
 
 play it here! ====> https://pacific-tundra-46208.herokuapp.com/
+hover over the help in-game for the controls!
+
+Alternatively, fork and clone this repo.
+In your terminal, run - npm i - to grab the depencencies, 
+then use the included start script to run the game locally on port 1234, 
+or, in your terminal again, run node server.js, which will open the game on port 8000 
+
+After picking one of these options, go to your browser and in the address bar type
+localhost:1234
+
+or 
+
+Localhost:8000
+
+depending on your choice from above. 
 
 ## Description
 This game was built using phaser.io, running on a node.js/express server in about 3 days. 
@@ -36,4 +51,4 @@ and how to easily find the right methods to use on the right objects, which was 
 On top of this, my current code needs 
 to be refactored and cleaned up. In my mad dash to get this done, I 
 
- 
+
